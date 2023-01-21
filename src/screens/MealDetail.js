@@ -6,7 +6,6 @@ import {
   Text,
   StyleSheet,
   ScrollView,
-  ActivityIndicator,
   Alert,
 } from 'react-native';
 import Header from '../components/Header';
@@ -15,7 +14,6 @@ import {selectedMeal} from '../Redux/Actions.js/MealActions';
 import {useDispatch, useSelector} from 'react-redux';
 
 const MealDetailScreen = ({route, navigation, props}) => {
-  const [loaded, setLoaded] = useState(true);
   let mealDetail = useSelector(state => state.meal);
 
   const {mealId, mealTitle} = route.params;
@@ -24,9 +22,7 @@ const MealDetailScreen = ({route, navigation, props}) => {
   useEffect(() => {
     getMealDetailApiCall(mealId)
       .then(mealData => {
-        console.log('Meal Array', mealData);
         dispatch(selectedMeal(mealData[0]));
-        setLoaded(true);
       })
       .catch(err => {
         Alert.alert('Server Issue', err);
@@ -34,44 +30,34 @@ const MealDetailScreen = ({route, navigation, props}) => {
   }, [mealId]);
 
   return (
-    <React.Fragment>
-      {loaded && (
-        <SafeAreaView style={styles.mainWrapper}>
-          <Header
-            value={mealTitle}
-            icon="true"
-            onPress={() => navigation.goBack()}
-          />
-          <ScrollView style={styles.subWrap}>
-            <Image
-              source={{
-                uri: mealDetail.strMealThumb,
-              }}
-              style={styles.image}
-            />
-            <View style={styles.details}>
-              <Text style={{color: '#fff'}}>{mealDetail.strMeal}</Text>
-              <Text style={{color: '#fff'}}>{mealDetail.strCategory}</Text>
-              <Text style={{color: '#fff'}}>{mealDetail.strArea}</Text>
-            </View>
-
-            <View>
-              <View style={styles.instructWrap}>
-                <Text style={styles.IngridientHeading}>Instructions</Text>
-                <Text style={styles.preparation}>
-                  {mealDetail.strInstructions}
-                </Text>
-              </View>
-            </View>
-          </ScrollView>
-        </SafeAreaView>
-      )}
-      {!loaded && (
-        <View style={[styles.container, styles.horizontal]}>
-          <ActivityIndicator size="large" color="red" />
+    <SafeAreaView style={styles.mainWrapper}>
+      <Header
+        value={mealTitle}
+        icon="true"
+        onPress={() => navigation.goBack()}
+      />
+      <ScrollView style={styles.subWrap}>
+        <Image
+          source={{
+            uri: mealDetail.strMealThumb,
+          }}
+          style={styles.image}
+        />
+        <View style={styles.details}>
+          <Text style={{color: '#fff'}}>
+            Category: {mealDetail.strCategory}
+          </Text>
+          <Text style={{color: '#fff'}}>Area: {mealDetail.strArea}</Text>
         </View>
-      )}
-    </React.Fragment>
+
+        <View>
+          <View style={styles.instructWrap}>
+            <Text style={styles.IngridientHeading}>Instructions</Text>
+            <Text style={styles.preparation}>{mealDetail.strInstructions}</Text>
+          </View>
+        </View>
+      </ScrollView>
+    </SafeAreaView>
   );
 };
 

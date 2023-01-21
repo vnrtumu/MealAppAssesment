@@ -13,7 +13,6 @@ export const mealsReducer = (state = intialState, {type, payload}) => {
 };
 
 export const selectedMealsReducer = (state = {}, {type, payload}) => {
-  console.log(type);
   switch (type) {
     case ActionTypes.SELECTED_MEAL:
       return {...state, ...payload};

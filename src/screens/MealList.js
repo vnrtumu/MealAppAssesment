@@ -60,7 +60,7 @@ const MealList = ({navigation, props}) => {
           data={mealData}
           keyExtractor={item => item.idMeal}
           renderItem={renderMealItem}
-          style={{width: '100%'}}
+          style={styles.mealList}
         />
       </View>
     </SafeAreaView>
@@ -76,6 +76,10 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     padding: 15,
+  },
+  mealList: {
+    width: '100%',
+    marginTop: 20,
   },
 });
 
