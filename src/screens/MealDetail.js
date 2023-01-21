@@ -7,22 +7,30 @@ import {
   StyleSheet,
   ScrollView,
   ActivityIndicator,
+  Alert,
 } from 'react-native';
 import Header from '../components/Header';
 import {getMealDetailApiCall} from '../Services';
+import {selectedMeal} from '../Redux/Actions.js/MealActions';
+import {useDispatch, useSelector} from 'react-redux';
 
 const MealDetailScreen = ({route, navigation, props}) => {
-  const [mealDetail, setMealDetail] = useState({});
   const [loaded, setLoaded] = useState(true);
+  let mealDetail = useSelector(state => state.meal);
 
   const {mealId, mealTitle} = route.params;
+  const dispatch = useDispatch();
 
   useEffect(() => {
-    getMealDetailApiCall(mealId).then(mealData => {
-      console.log('Meal Array', mealData);
-      setMealDetail(mealData[0]);
-      setLoaded(true);
-    });
+    getMealDetailApiCall(mealId)
+      .then(mealData => {
+        console.log('Meal Array', mealData);
+        dispatch(selectedMeal(mealData[0]));
+        setLoaded(true);
+      })
+      .catch(err => {
+        Alert.alert('Server Issue', err);
+      });
   }, [mealId]);
 
   return (

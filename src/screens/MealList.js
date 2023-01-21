@@ -1,23 +1,37 @@
 import React, {useEffect, useState} from 'react';
-import {View, SafeAreaView, FlatList, StyleSheet} from 'react-native';
+import {View, SafeAreaView, FlatList, StyleSheet, Alert} from 'react-native';
 
 import {getMealListApiCall, getMealSearchApiCall} from '../Services';
 import MealItem from '../components/MealItem';
 import Header from '../components/Header';
 import Search from '../components/Search';
+import {useDispatch, useSelector} from 'react-redux';
+
+import {setMeals} from '../Redux/Actions.js/MealActions';
 
 const MealList = ({navigation, props}) => {
-  const [mealData, setMealData] = useState([]);
+  const mealData = useSelector(state => state.allMeals.meals);
+
+  const dispatch = useDispatch();
 
   function updateSearch(value) {
-    getMealSearchApiCall(value).then(data => {
-      setMealData(data);
-    });
+    getMealSearchApiCall(value)
+      .then(data => {
+        dispatch(setMeals(data));
+      })
+      .catch(err => {
+        Alert.alert('Server Issue', err);
+      });
   }
+
   useEffect(() => {
-    getMealListApiCall().then(meals => {
-      setMealData(meals);
-    });
+    getMealListApiCall()
+      .then(meals => {
+        dispatch(setMeals(meals));
+      })
+      .catch(err => {
+        Alert.alert('Server Issue', err);
+      });
   }, []);
 
   const renderMealItem = itemData => {
