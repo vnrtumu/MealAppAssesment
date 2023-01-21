@@ -19,8 +19,8 @@ const MealList = ({navigation, props}) => {
       .then(data => {
         dispatch(setMeals(data));
       })
-      .catch(err => {
-        Alert.alert('Server Issue', err);
+      .catch(e => {
+        console.log('Error:', e);
       });
   }
 
@@ -29,8 +29,8 @@ const MealList = ({navigation, props}) => {
       .then(meals => {
         dispatch(setMeals(meals));
       })
-      .catch(err => {
-        Alert.alert('Server Issue', err);
+      .catch(e => {
+        console.log('Error:', e);
       });
   }, []);
 

@@ -5,4 +5,5 @@ const reducers = combineReducers({
   allMeals: mealsReducer,
   meal: selectedMealsReducer,
 });
+
 export default reducers;

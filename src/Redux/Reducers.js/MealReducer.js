@@ -1,4 +1,5 @@
 import {ActionTypes} from '../constants/ActionTypes';
+
 const intialState = {
   meals: [],
 };

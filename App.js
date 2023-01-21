@@ -6,19 +6,22 @@ import MealList from './src/screens/MealList';
 import MealDetail from './src/screens/MealDetail';
 
 import {Provider} from 'react-redux';
-import {store} from './src/Redux/Store';
+import {store, persistor} from './src/Redux/Store';
+import {PersistGate} from 'redux-persist/integration/react';
 
 const Stack = createNativeStackNavigator();
 
 function App() {
   return (
     <Provider store={store}>
-      <NavigationContainer>
-        <Stack.Navigator screenOptions={{headerShown: false}}>
-          <Stack.Screen name="Meal" component={MealList} />
-          <Stack.Screen name="Detail" component={MealDetail} />
-        </Stack.Navigator>
-      </NavigationContainer>
+      <PersistGate loading={null} persistor={persistor}>
+        <NavigationContainer>
+          <Stack.Navigator screenOptions={{headerShown: false}}>
+            <Stack.Screen name="Meal" component={MealList} />
+            <Stack.Screen name="Detail" component={MealDetail} />
+          </Stack.Navigator>
+        </NavigationContainer>
+      </PersistGate>
     </Provider>
   );
 }

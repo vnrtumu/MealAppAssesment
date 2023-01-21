@@ -24,8 +24,8 @@ const MealDetailScreen = ({route, navigation, props}) => {
       .then(mealData => {
         dispatch(selectedMeal(mealData[0]));
       })
-      .catch(err => {
-        Alert.alert('Server Issue', err);
+      .catch(e => {
+        console.log('Error:', e);
       });
   }, [mealId]);
 
